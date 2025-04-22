@@ -11,20 +11,68 @@
 
     <div class="container">
         <h1>HKHK Spordipäev 2025</h1>
+    <?php
 
+        if(isset($_GET["muuda"]) && isset($_GET["id"])){
+                $id = $_GET["id"];
+                $kuvaparing = "SELECT * FROM sport2025 WHERE id=".$id."";
+                $saada_paring = mysqli_query($yhendus, $kuvaparing);
+                $rida = mysqli_fetch_assoc($saada_paring);
+                }
+    ?>
         <form action="index.php" method="get">
-            Nimi: <input type="text" name="full_name"><br>
-            Email: <input type="email" name="email"><br>
-            Vanus: <input type="number" name="age" min="16" max="88" step="1"><br>
-            Sugu: <input type="text" name="gender" limit="5"><br>
-            Spordiala: <input type="text" name="category" limit="20"><br>
-            <input type="submit" value="Salvesta" class="btn btn-primary"><br>
+            <input type=hidden name="id" value="<?php !empty($rida['id']) ? print_r($rida['id']) : '' ?>" ><br>
+            Nimi: <input type="text" name="full_name" required value="<?php !empty($rida['full_name']) ? print_r($rida['full_name']) : '' ?>" ><br>
+            Email: <input type="email" name="email" required value="<?php !empty($rida['email']) ? print_r($rida['email']) : '' ?>"  ><br>
+            Vanus: <input type="number" name="age" min="16" max="88" step="1" required value="<?php !empty($rida['age']) ? print_r($rida['age']) : '' ?>"  ><br>
+            Sugu: <input type="text" name="gender"  required value="<?php !empty($rida['gender']) ? print_r($rida['gender']) : '' ?>"  ><br>
+            Spordiala: <input type="text" name="category"  required value="<?php !empty($rida['category']) ? print_r($rida['category']) : '' ?>"  ><br>
+            <?php if(isset($_GET["muuda"]) && isset($_GET["id"])){ ?>
+                <input type="submit" value="Salvesta_muudatus" name="salvesta_muudatus" class="btn btn-success"><br>
+            <?php }  else { ?>
+                <input type="submit" value="Salvesta" name="salvesta" class="btn btn-primary"><br>
+            <?php } ?>
+            
+            <?php
+                if(isset($_GET["salvesta_muudatus"]) && isset($_GET["id"])) {
+                    $id = $_GET["id"];
+                    $fullname = $_GET["full_name"];
+                    $email = $_GET["email"];
+                    $age = $_GET["age"];
+                    $gender = $_GET["gender"];
+                    $category = $_GET["category"];
+
+                    $muuda_paring="UPDATE sport2025 SET full_name='".$fullname."',
+                    email='".$email."',age='".$age."',gender='".$gender."',category='".$category."' Where id = ".$id."";
+
+                    $saada_paring = mysqli_query($yhendus, $muuda_paring);
+                    $tulemus = mysqli_affected_rows($yhendus);
+	                if ($tulemus == 1) {
+		                header('Location: index.php?msg=Andmed uuendatud');
+	                } else {
+		                echo "Andmeid ei uuendatud";
+	                }
+                }
+            ?>
+    <!-- $muuda_paring="UPDATE sport2025 SET full_name='Tommy Welbandd',
+    email='uus@sadf.ee',age="11",gender="apach",category="uisutamine" Where id = 3"; -->
+            
         </form>
+
         <?php
-        if (isset($_GET["full_name"]) && !empty($_GET["full_name"])) {
+
+        if (isset($_GET["salvesta"]) && !empty($_GET["full_name"])) {
             // INSERT INTO `sport2025` (`id`, `full_name`, `email`, `age`, `gender`, `category`, `reg_time`) VALUES (NULL, 'karineegreid', 'asdioasjhd@gmail.com', '27', 'Female', 'jooks', current_timestamp());
+            $fullname = $_GET["full_name"];
+            $email = $_GET["email"];
+            $age = $_GET["age"];
+            $gender = $_GET["gender"];
+            $category = $_GET["category"];
             $lisa_paring = "INSERT INTO sport2025 (full_name,email,age,gender,category)
-            VALUES ('karin eegreid','asdiasdasdadssdaoasjhd@gmail.com','27','Female','jooks')";
+            VALUES ('".$fullname."','".$email."','".$age."','".$gender."','".$category."')";
+
+            // print_r($lisa_paring);
+
             $saada_paring = mysqli_query($yhendus, $lisa_paring);
 
             $tulemus = mysqli_affected_rows($yhendus);
@@ -57,6 +105,25 @@
             <th>Kustuta</th>
         </tr>
             <?php
+                if(isset($_GET['msg'])){
+                    echo "<tr><td><div class='alert alert-success'>".$_GET['msg']."</div></td></tr>";
+                }
+                if(isset($_GET['kustuta']) && isset($_GET['id'])){
+                $id = $_GET["id"];
+                $kparing = "DELETE FROM sport2025 WHERE id=".$id."";
+                $saada_paring = mysqli_query($yhendus, $kparing);
+                $tulemus = mysqli_affected_rows($yhendus);
+                    if($tulemus == 1){
+                        header('Location: index.php?msg=Rida Kustutatud');
+                    } else {
+                        echo "kirjet ei kustutatud";
+                    }
+                }
+
+                
+
+                
+                
                 if(isset($_GET["otsi"]) && !empty($_GET["otsi"])) {
                     $s = $_GET["otsi"];
                     $cat = $_GET["cat"];
@@ -80,13 +147,18 @@
                     echo "<td>".$rida['gender']."</td>";
                     echo "<td>".$rida['category']."</td>";
                     echo "<td>".$rida['reg_time']."</td>";
-                    echo "<td><a class='btn btn-success' href=''>Muuda</a></td>";
-                    echo "<td><a class='btn btn-danger' href=''>Muuda</a></td>";
+                    echo "<td><a class='btn btn-success' href='?muuda&id=".$rida['id']."'>Muuda</a></td>";
+                    echo "<td><a class='btn btn-danger' href='?kustuta=jah&id=".$rida['id']."'>Kustuta</a></td>";
                     echo "</tr>";
                     
                 }
             ?>  
+            </table>
     </div>
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-  </body>
+
+</body>
+    
 </html>
+
