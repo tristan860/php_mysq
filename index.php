@@ -20,20 +20,7 @@
                 $rida = mysqli_fetch_assoc($saada_paring);
                 }
     ?>
-        <form action="index.php" method="get">
-            <input type=hidden name="id" value="<?php !empty($rida['id']) ? print_r($rida['id']) : '' ?>" ><br>
-            Nimi: <input type="text" name="full_name" required value="<?php !empty($rida['full_name']) ? print_r($rida['full_name']) : '' ?>" ><br>
-            Email: <input type="email" name="email" required value="<?php !empty($rida['email']) ? print_r($rida['email']) : '' ?>"  ><br>
-            Vanus: <input type="number" name="age" min="16" max="88" step="1" required value="<?php !empty($rida['age']) ? print_r($rida['age']) : '' ?>"  ><br>
-            Sugu: <input type="text" name="gender"  required value="<?php !empty($rida['gender']) ? print_r($rida['gender']) : '' ?>"  ><br>
-            Spordiala: <input type="text" name="category"  required value="<?php !empty($rida['category']) ? print_r($rida['category']) : '' ?>"  ><br>
-            <?php if(isset($_GET["muuda"]) && isset($_GET["id"])){ ?>
-                <input type="submit" value="Salvesta_muudatus" name="salvesta_muudatus" class="btn btn-success"><br>
-            <?php }  else { ?>
-                <input type="submit" value="Salvesta" name="salvesta" class="btn btn-primary"><br>
-            <?php } ?>
-            
-            <?php
+                <?php
                 if(isset($_GET["salvesta_muudatus"]) && isset($_GET["id"])) {
                     $id = $_GET["id"];
                     $fullname = $_GET["full_name"];
@@ -54,6 +41,20 @@
 	                }
                 }
             ?>
+        <form action="index.php" method="get">
+            <input type=hidden name="id" value="<?php !empty($rida['id']) ? print_r($rida['id']) : '' ?>" ><br>
+            Nimi: <input type="text" name="full_name" required value="<?php !empty($rida['full_name']) ? print_r($rida['full_name']) : '' ?>" ><br>
+            Email: <input type="email" name="email" required value="<?php !empty($rida['email']) ? print_r($rida['email']) : '' ?>"  ><br>
+            Vanus: <input type="number" name="age" min="16" max="88" step="1" required value="<?php !empty($rida['age']) ? print_r($rida['age']) : '' ?>"  ><br>
+            Sugu: <input type="text" name="gender"  required value="<?php !empty($rida['gender']) ? print_r($rida['gender']) : '' ?>"  ><br>
+            Spordiala: <input type="text" name="category"  required value="<?php !empty($rida['category']) ? print_r($rida['category']) : '' ?>"  ><br>
+            <?php if(isset($_GET["muuda"]) && isset($_GET["id"])){ ?>
+                <input type="submit" value="Salvesta_muudatus" name="salvesta_muudatus" class="btn btn-success"><br>
+            <?php }  else { ?>
+                <input type="submit" value="Salvesta" name="salvesta" class="btn btn-primary"><br>
+            <?php } ?>
+            
+
     <!-- $muuda_paring="UPDATE sport2025 SET full_name='Tommy Welbandd',
     email='uus@sadf.ee',age="11",gender="apach",category="uisutamine" Where id = 3"; -->
             
@@ -134,6 +135,7 @@
                     $paring = "SELECT * FROM sport2025 Limit 50";
 
                 }
+                
                 $saada_paring = mysqli_query($yhendus, $paring);
                 //võtab KÕIK read
                 //assoc annab nimelised väljad
