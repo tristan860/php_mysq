@@ -1,3 +1,4 @@
+<?php include("config.php")?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,14 +7,25 @@
     <title>document</title>
   </head>
   <body>
-        <h1>Salajane</h1>
 
         <?php
+  //         if (!empty($_POST['user']) && !empty($_POST['password'])) {
+  //   $login = $_POST['user'];
+  //   $pass = $_POST['password'];
+
+  //   $paring = "SELECT * FROM users";
+  //   $saada_paring = mysqli_query($yhendus, $paring);
+  //   $rida = mysqli_fetch_assoc($saada_paring);
+  //   print_r($rida);
+  //   // $s = $rida["password"];
+  // }
+          // echo password_hash('admin', PASSWORD_DEFAULT);
 session_start();
 if (!isset($_SESSION['tuvastamine'])) {
   header('Location: login.php');
   exit();
   }
+
 ?>
 <h1>Salajane info</h1>
 <p>Salainfo</p>

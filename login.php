@@ -7,6 +7,7 @@
   </head>
   <body>
   <?php
+
 	session_start();
 	if (isset($_SESSION['tuvastamine'])) {
 	  header('Location: admin.php');
@@ -20,6 +21,16 @@
 			header('Location: admin.php');
 		}
 	}
+
+		if (!empty($_POST['user']) && !empty($_POST['password'])) {
+		var_dump("mingi jama");
+
+			$paring = "SELECT * FROM users";
+			$saada_paring = mysqli_query($yhendus, $paring);
+			$rida = mysqli_fetch_assoc($saada_paring);
+    		print_r($rida);
+    		$s = $rida["password"];
+  }
 ?>
 <h1>Login</h1>
 <form action="" method="post">
