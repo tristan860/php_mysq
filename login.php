@@ -9,7 +9,7 @@
   <?php
 	session_start();
 	if (isset($_SESSION['tuvastamine'])) {
-	  header('Location: admin\index.php');
+	  header('Location: admin.php');
 	  exit();
 	  }
 	if (!empty($_POST['login']) && !empty($_POST['pass'])) {
@@ -17,7 +17,7 @@
 		$pass = $_POST['pass'];
 		if ($login=='admin' && $pass=='admin') {
 			$_SESSION['tuvastamine'] = 'misiganes';
-			header('Location: admin\index.php');
+			header('Location: admin.php');
 		}
 	}
 ?>
