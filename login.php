@@ -7,30 +7,33 @@
   </head>
   <body>
   <?php
-
-	session_start();
+  	session_start();
+	include("config.php");?>
+	<?php
 	if (isset($_SESSION['tuvastamine'])) {
 	  header('Location: admin.php');
 	  exit();
 	  }
 	if (!empty($_POST['login']) && !empty($_POST['pass'])) {
-		$login = $_POST['login'];
-		$pass = $_POST['pass'];
-		if ($login=='admin' && $pass=='admin') {
-			$_SESSION['tuvastamine'] = 'misiganes';
-			header('Location: admin.php');
-		}
-	}
 
-		if (!empty($_POST['user']) && !empty($_POST['password'])) {
-		var_dump("mingi jama");
 
-			$paring = "SELECT * FROM users";
-			$saada_paring = mysqli_query($yhendus, $paring);
-			$rida = mysqli_fetch_assoc($saada_paring);
-    		print_r($rida);
-    		$s = $rida["password"];
-  }
+		$login = htmlspecialchars(trim($_POST['login']));
+		$pass = htmlspecialchars(trim($_POST['pass']));
+
+		$paring = "SELECT * FROM users WHERE user='$login'";
+      	$valjund = mysqli_query($yhendus, $paring);
+
+		if ($valjund && mysqli_num_rows($valjund) == 1) {
+			$user = mysqli_fetch_assoc($valjund);
+			if (password_verify($pass, $user['password'])) {
+				$_SESSION['tuvastamine'] = 'misiganes';
+				header('Location: admin.php');
+				exit();
+			} else {
+				echo "kasutaja või parool on vale";
+			}
+}
+}
 ?>
 <h1>Login</h1>
 <form action="" method="post">
