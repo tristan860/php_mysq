@@ -11,7 +11,7 @@
 
     
     <div class="container">
-        <a href="login.php" class="btn btn-danger">Login</a>
+        <a href="login.php" class="btn btn-success">Login</a>
         <h1>HKHK Spordipäev 2025</h1>
 
 
@@ -41,7 +41,7 @@
         </tr>
             <?php
  
-                if(isset($_GET["otsi"]) && !empty($_GET["otsi"])) {
+                                if(isset($_GET["otsi"]) && !empty($_GET["otsi"])) {
                     $s = $_GET["otsi"];
                     $cat = $_GET["cat"];
                     echo "Otsing: ".$s;
@@ -51,6 +51,48 @@
                     $paring = "SELECT * FROM sport2025 Limit 50";
 
                 }
+
+                // $paring = "SELECT * FROM sport2025 LIMIT 50";
+            $saada_paring = mysqli_query($yhendus, $paring);
+            // võtab kõik read
+            $kasutajad_lehel = 50;
+            $kasutajad_kokku_paring = "SELECT COUNT('id') FROM sport2025";
+            $lehtede_vastus = mysqli_query($yhendus, $kasutajad_kokku_paring);
+            $kasutajad_kokku = mysqli_fetch_array($lehtede_vastus);
+            $lehti_kokku = $kasutajad_kokku[0];
+            $lehti_kokku = ceil($lehti_kokku/$kasutajad_lehel);
+
+        
+
+        
+        $saada_paring = mysqli_query($yhendus, $paring);
+
+        
+
+                if (isset($_GET['page'])) {
+                    $leht = $_GET['page'];
+                } else {
+                    $leht = 1;
+                }
+                //millest näitamist alustatakse
+                $start = ($leht-1)*$kasutajad_lehel;
+
+                if (isset($_GET["otsi"]) && !empty($_GET["otsi"])){
+                    $s = $_GET["otsi"];
+                    echo "Otsing: " .$s;?><br><?php
+                    $cat = $_GET["cat"];
+    
+                    $paring = "SELECT * FROM sport2025 WHERE $cat LIKE '%$s%' LIMIT $start, $kasutajad_lehel";
+     
+                    $kasutajad_kokku_paring = "SELECT COUNT('id') FROM sport2025 WHERE $cat LIKE '%$s%'";
+                    $lehtede_vastus = mysqli_query($yhendus, $kasutajad_kokku_paring);
+                    $kasutajad_kokku = mysqli_fetch_array($lehtede_vastus);
+                    $lehti_kokku = ceil($kasutajad_kokku[0] / $kasutajad_lehel);
+                } else {
+                    // Default query with pagination
+                    $paring = "SELECT * FROM sport2025 LIMIT $start, $kasutajad_lehel";
+                }
+
                 
                 $saada_paring = mysqli_query($yhendus, $paring);
                 //võtab KÕIK read
@@ -66,6 +108,28 @@
                     echo "<td>".$rida['category']."</td>";
                     echo "<td>".$rida['reg_time']."</td>";
                     echo "</tr>";
+                    
+                }
+
+                //kuvame lingid
+                $eelmine = $leht - 1;
+                $jargmine = $leht + 1;
+        
+
+                if ($leht > 1) {
+                    echo "<a href='?page=$eelmine'>←</a> ";
+                }
+                if ($lehti_kokku >= 1) {
+                    for ($i = 1; $i <= $lehti_kokku; $i++) {
+                        if ($i == $leht) {
+                            echo "<b><a href='?page=$i'>$i</a></b> ";
+                        } else {
+                            echo "<a href='?page=$i'>$i</a> ";
+                        }
+                    }
+                }
+                if ($leht < $lehti_kokku) {
+                    echo "<a href='?page=$jargmine'>→</a> ";
                     
                 }
             ?>  

@@ -33,6 +33,13 @@
 				echo "kasutaja või parool on vale";
 			}
 }
+elseif (isset($_POST['remember']) && $_POST['remember'] == 'on') {
+				// Määrame küpsise, mis kehtib 30 päeva
+				setcookie("nimi", $login, time() + (86400 * 30), "/");
+			} else {
+				// Küpsist ei seata
+				setcookie("nimi", "", time() - 3600, "/");
+			}<
 }
 ?>
 <h1>Login</h1>
@@ -40,6 +47,7 @@
 	Login: <input type="text" name="login"><br>
 	Password: <input type="password" name="pass"><br>
 	<input type="submit" value="Logi sisse">
+	<input type="checkbox" class="mt-3" checked name="remember" > Jäta meelde
 </form>
 </body>
 </html>
