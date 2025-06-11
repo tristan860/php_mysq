@@ -11,8 +11,8 @@
     <div class="container">
     <form action="logout.php" method="post">
 	<input type="submit" value="Logi välja" name="logout">
-</div>
 </form>
+</div>
     <?php
       session_start();
       include("config.php");
@@ -177,7 +177,9 @@
 
                 if (isset($_GET["otsi"]) && !empty($_GET["otsi"])){
                     $s = $_GET["otsi"];
-                    echo "Otsing: " .$s;?><br><?php
+                    echo "Otsing: " .$s;?><br>
+                    
+                    <?php
                     $cat = $_GET["cat"];
     
                     $paring = "SELECT * FROM sport2025 WHERE $cat LIKE '%$s%' LIMIT $start, $kasutajad_lehel";
@@ -209,22 +211,23 @@
                     echo "<td><a class='btn btn-danger' href='?kustuta=jah&id=".$rida['id']."'>Kustuta</a></td>";
                     echo "</tr>";
                     
-                }
-
+                }?>
+                            </table>
+                <?php
                 //kuvame lingid
                 $eelmine = $leht - 1;
                 $jargmine = $leht + 1;
         
 
                 if ($leht > 1) {
-                    echo "<a href='?page=$eelmine'>←</a> ";
+                    echo "<a href='?page=$eelmine'>←</a>";
                 }
                 if ($lehti_kokku >= 1) {
                     for ($i = 1; $i <= $lehti_kokku; $i++) {
                         if ($i == $leht) {
-                            echo "<b><a href='?page=$i'>$i</a></b> ";
+                            echo "<a href='?page=$i'>$i</a>";
                         } else {
-                            echo "<a href='?page=$i'>$i</a> ";
+                            echo "<a href='?page=$i'>$i</a>";
                         }
                     }
                 }
@@ -234,14 +237,12 @@
                 }
 
             ?>  
-            </table>
+
     </div>
    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
 
-</body>
     
-</html>
 <!-- if (!empty($_POST['user']) && !empty($_POST['password'])) {
 $login = $_POST['user'];
 $pass = $_POST['password'];

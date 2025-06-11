@@ -18,7 +18,6 @@
     <!-- $muuda_paring="UPDATE sport2025 SET full_name='Tommy Welbandd',
     email='uus@sadf.ee',age="11",gender="apach",category="uisutamine" Where id = 3"; -->
             
-        </form>
 
    
         <form action="index.php" method="get" class="py-4">
@@ -109,8 +108,9 @@
                     echo "<td>".$rida['reg_time']."</td>";
                     echo "</tr>";
                     
-                }
-
+                }?>
+                </table>
+                <?php
                 //kuvame lingid
                 $eelmine = $leht - 1;
                 $jargmine = $leht + 1;
@@ -122,7 +122,7 @@
                 if ($lehti_kokku >= 1) {
                     for ($i = 1; $i <= $lehti_kokku; $i++) {
                         if ($i == $leht) {
-                            echo "<b><a href='?page=$i'>$i</a></b> ";
+                            echo "<a href='?page=$i'>$i</a> ";
                         } else {
                             echo "<a href='?page=$i'>$i</a> ";
                         }
@@ -133,7 +133,7 @@
                     
                 }
             ?>  
-            </table>
+
     </div>
    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
